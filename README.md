@@ -32,30 +32,6 @@ ORDER BY ActivityDate;
 ### Cleaning the data
 For cleaning the data, I handle missing data by using the na.omit syntax, then remove duplicates by using the distinct() function. In the next step, I correct the format of fields to ensure data integrity.
 
-```{r}
-# Install the tidyverse package
-install.packages("tidyverse")
-install.packages("reshape2")
-```
-
-```{r}
-# Load the tidyverse package
-library(tidyverse)
-library(lubridate)
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(reshape2)
-```
-
-```{r}
-# Importing datasets
-daily_activity <- read.csv("dailyActivity_merged.csv")
-sleep_day <- read.csv("sleepDay_merged.csv")
-weight_log <- read.csv("weightLogInfo_merged.csv")
-# Inspect data
-print(head(daily_activity))
-```
 
 ```{r}
 ##           Id ActivityDate TotalSteps TotalDistance TrackerDistance
@@ -86,10 +62,6 @@ print(head(daily_activity))
 ## 4                  34                  209              726     1745
 ## 5                  10                  221              773     1863
 ## 6                  20                  164              539     1728
-```
-
-```{r}
-summary(daily_activity)
 ```
 
 ```{r}
@@ -131,10 +103,6 @@ summary(daily_activity)
 ```
 
 ```{r}
-print(head(sleep_day))
-```
-
-```{r}
 ##           Id              SleepDay TotalSleepRecords TotalMinutesAsleep
 ## 1 1503960366 4/12/2016 12:00:00 AM                 1                327
 ## 2 1503960366 4/13/2016 12:00:00 AM                 2                384
@@ -149,10 +117,6 @@ print(head(sleep_day))
 ## 4            367
 ## 5            712
 ## 6            320
-```
-
-```{r}
-summary(sleep_day)
 ```
 
 ```{r}
@@ -172,9 +136,6 @@ summary(sleep_day)
 ##  Max.   :961.0
 ```
 
-```{r}
-print(head(weight_log))
-```
 
 ```{r}
 ##           Id                  Date WeightKg WeightPounds Fat   BMI
@@ -191,10 +152,6 @@ print(head(weight_log))
 ## 4           TRUE 1.46128e+12
 ## 5           TRUE 1.46310e+12
 ## 6           TRUE 1.46094e+12
-```
-
-```{r}
-summary(weight_log)
 ```
 
 ```{r}
@@ -242,17 +199,6 @@ weight_log$WeightKg <- as.numeric(weight_log$WeightKg)
 During the analysis phase, I begin by examining the dataset through summaries of each table's fields, providing insights into the variables present. Following this initial exploration, I employ these variables in creating visualizations to better understand the data distributions and relationships.
 
 ```{r}
-#----------------------Data Exploration----------------
-# Daily Activity Summary
-daily_activity_summary <- daily_activity %>%
-  select(TotalSteps, TotalDistance, Calories) %>%
-  summary()
-print("Daily Activity Summary:")
-## [1] "Daily Activity Summary:"
-print(daily_activity_summary)
-```
-
-```{r}
 ##    TotalSteps    TotalDistance       Calories   
 ##  Min.   :    0   Min.   : 0.000   Min.   :   0  
 ##  1st Qu.: 3146   1st Qu.: 2.170   1st Qu.:1799  
@@ -260,13 +206,6 @@ print(daily_activity_summary)
 ##  Mean   : 7281   Mean   : 5.219   Mean   :2266  
 ##  3rd Qu.:10544   3rd Qu.: 7.500   3rd Qu.:2770  
 ##  Max.   :36019   Max.   :28.030   Max.   :4900
-```
-
-```{r}
-# Activity levels
-daily_activity %>%
-  select(VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes,SedentaryMinutes) %>%
-  summary()
 ```
 
 ```{r}
@@ -280,16 +219,6 @@ daily_activity %>%
 ```
 
 ```{r}
-# Sleep Day Summary
-sleep_day_summary <- sleep_day %>%
-  select(TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed) %>%
-  summary()
-print("Sleep Day Summary:")
-## [1] "Sleep Day Summary:"
-print(sleep_day_summary)
-```
-
-```{r}
 ##  TotalSleepRecords TotalMinutesAsleep TotalTimeInBed 
 ##  Min.   :1.00      Min.   : 58.0      Min.   : 61.0  
 ##  1st Qu.:1.00      1st Qu.:361.0      1st Qu.:403.8  
@@ -297,16 +226,6 @@ print(sleep_day_summary)
 ##  Mean   :1.12      Mean   :419.2      Mean   :458.5  
 ##  3rd Qu.:1.00      3rd Qu.:490.0      3rd Qu.:526.0  
 ##  Max.   :3.00      Max.   :796.0      Max.   :961.0
-```
-
-```{r}
-# Weight Log Summary
-weight_log_summary <- weight_log %>%
-  select(WeightKg, BMI) %>%
-  summary()
-print("Weight Log Summary:")
-## [1] "Weight Log Summary:"
-print(weight_log_summary)
 ```
 
 ```{r}
@@ -328,50 +247,8 @@ print(weight_log_summary)
 ## Visualization
 Here, I employ the ggplot() function to visualize relationships between variables and identify critical trends within the data.
 ### Relationship Between Total Steps and Calories Burned
-```{r calories-plot, fig.width=12, fig.height=6}
-p1 <- ggplot(daily_activity, aes(x = TotalSteps, y = Calories)) +
-  geom_point(alpha = 0.4, color = "blue") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(title = "Total Steps Vs Calories Burned",
-       x = "Total Steps",
-       y = "Calories Burned") +
-  theme_minimal()
-
-# Plot for TotalDistance vs Calories
-p2 <- ggplot(daily_activity, aes(x = TotalDistance, y = Calories)) +
-  geom_point(alpha = 0.4, color = "green") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(title = "Total Distance Vs Calories Burned",
-       x = "Total Distance",
-       y = "Calories Burned") +
-  theme_minimal()
-
-# Display plots
-gridExtra::grid.arrange(p1, p2, ncol = 2)
-```
 
 ![image](https://github.com/user-attachments/assets/78617c6c-3aca-4c4a-a18e-ddfee668e1b2)
-
-```{r calories-plot, fig.width=12, fig.height=6}
-daily_activity %>%
-  summarise(
-    distance = factor(case_when(
-      TotalDistance < 4.5 ~ "< 4.5 mi",
-      TotalDistance >= 4.5 & TotalDistance <= 7 ~ "4.5 > & < 7 mi",
-      TotalDistance > 7 ~ "> 7 mi",
-    ),levels = c("> 7 mi","4.5 > & < 7 mi","< 4.5 mi")),
-    steps = factor(case_when(
-      TotalSteps < 6000 ~ "< 6k steps",
-      TotalSteps >= 6000 & TotalSteps <= 10000 ~ "6k > & < 10k Steps",
-      TotalSteps > 10000 ~ "> 10k Steps",
-    ),levels = c("> 10k Steps","6k > & < 10k Steps","< 6k steps")),
-    Calories) %>%
-  ggplot(aes(steps,Calories,fill=steps)) +
-  geom_boxplot() +
-  facet_wrap(~distance)+
-  labs(title="Calories burned by Steps and Distance",x=NULL) +
-  theme(legend.position="none", text = element_text(size = 10),plot.title = element_text(hjust = 0.5))
-```
 
 ![image](https://github.com/user-attachments/assets/ecc95c3a-3006-493e-8622-721f97443be6)
 
@@ -400,51 +277,11 @@ data_by_usertype <- daily_activity %>%
       SedentaryMinutes < mean(SedentaryMinutes) & LightlyActiveMinutes < mean(LightlyActiveMinutes) & FairlyActiveMinutes < mean(FairlyActiveMinutes) & VeryActiveMinutes > mean(VeryActiveMinutes) ~ "Very Active",
     ),levels=c("Sedentary", "Lightly Active", "Fairly Active", "Very Active")), Calories, .group=Id) %>%
   drop_na()
-
-# Bar chart
-data_by_usertype %>%
-group_by(user_type) %>%
-summarise(total = n()) %>%
-mutate(totals = sum(total)) %>%
-group_by(user_type) %>%
-summarise(total_percent = total / totals) %>%   
-ggplot(aes(user_type,y=total_percent, fill=user_type)) +   # Visualize user types
-geom_col()+
-scale_y_continuous(labels = scales::percent) +
-theme(legend.position="none") +
-labs(title="User type distridution", x=NULL) +
-theme(legend.position="none", text = element_text(size = 20),plot.title = element_text(hjust = 0.5))
 ```
 
 ![image](https://github.com/user-attachments/assets/d4967fbd-7bd0-4ae1-97ed-7c4a1aceb6d3)
 
-```{r}
-# Pie chart
-data_by_usertype %>%
-  group_by(user_type) %>%
-  summarise(total = n()) %>%
-  mutate(totals = sum(total)) %>%
-  group_by(user_type) %>%
-  summarise(total_percent = total / totals) %>%
-  ggplot(aes(x="", y=total_percent, fill=paste(user_type, scales::percent(total_percent)))) +   # Combine user type and percentage for legend
-  geom_bar(stat="identity", width=1) +
-  coord_polar(theta="y") +
-  scale_fill_discrete(name="User Type", labels=function(x) x) +  # Custom label function to keep original labels
-  theme_void() +
-  labs(title="User Type Distribution") +
-  theme(legend.position="right", legend.title = element_text(size=14), legend.text = element_text(size=12), plot.title = element_text(hjust=0.5))
-```
 ![image](https://github.com/user-attachments/assets/ce7ed492-9b63-4f1a-9388-3eace8b20dd3)
-
-
-```{r}
-# Box plot
-ggplot(data_by_usertype, aes(user_type, Calories, fill=user_type)) +
-  geom_boxplot() +
-  theme(legend.position="none") +
-  labs(title="Calories burned by User type", x=NULL) +
-  theme(legend.position="none", text = element_text(size = 20),plot.title = element_text(hjust = 0.5))    
-```
 
 ![image](https://github.com/user-attachments/assets/534c984b-24bd-480a-8f95-d2f1f46c49fd)
 
@@ -487,12 +324,6 @@ sleepType_by_userType <- merged_data %>%
 
 #Now we can plot the data for each user type:
 sleepType_by_userType_melted<- melt(sleepType_by_userType, id.vars = "user_type")
-
-ggplot(sleepType_by_userType_melted, aes(user_type, value, fill = variable)) +
-  geom_bar(position = "dodge", stat = "identity") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x=NULL, fill="Sleep type") + 
-  theme(legend.position="bottom",text = element_text(size = 20),plot.title = element_text(hjust = 0.5))
 ```
 ![image](https://github.com/user-attachments/assets/e5e8a6bb-8a84-4240-81aa-dbf11496be0d)
 
