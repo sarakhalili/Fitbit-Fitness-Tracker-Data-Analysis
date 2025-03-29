@@ -332,7 +332,6 @@ This chart effectively illustrates the correlation between activity levels and s
 
 Surprisingly, the chart also shows a decline in the number of individuals who sleep excessively (over 8 hours) among the most active groups. This observation aligns with the idea that highly active people tend to spend less time in bed, possibly due to lifestyle or personal preferences.
 
-## 6. Act
 
 ### Revised Ideas for the the company App
 
